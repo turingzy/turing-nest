@@ -1,4 +1,4 @@
-# 部署的时候还需要注意 Cloudflare 使用的 Hugo 版本（尽可能一致）
+# 部署的时候还需要注意 Cloudflare 使用的 Hugo 和本地版本一致
 baseURL = 'https://blog.turingzy.cn'
 languageCode = 'zh-CN'
 title = 'TuringNest'
@@ -60,7 +60,7 @@ tags = [
 [params]
   mainSections = ["posts"]
   headTitle = "Yang Zhang"
-  description = "「I came, I saw, I conquered」"
+  description = "「Read up, Scope out, Eat light, Sleep tight.」"
   favicon = "/favicon.ico"
   lazyImage = true
   math = true
