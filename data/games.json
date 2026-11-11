@@ -1,6 +1,6 @@
 {
   "total": 49,
-  "total_playtime_hours": 514.5,
+  "total_playtime_hours": 521.1,
   "played_games": [
     {
       "name": "Counter-Strike 2",
@@ -42,6 +42,19 @@
       }
     },
     {
+      "name": "Resident Evil 7 Biohazard",
+      "appid": 418370,
+      "playtime_forever": 11.9,
+      "img_icon_url": "https://media.steampowered.com/steamcommunity/public/images/apps/418370/675cd2fbaae3c2a74a0c7e9eea71e969ff90d6bb.jpg",
+      "cover_url": "https://cdn.cloudflare.steamstatic.com/steam/apps/418370/header.jpg",
+      "last_played": "2026-11-08 21:52:11",
+      "app_url": "https://store.steampowered.com/app/418370/",
+      "achievements": {
+        "achieved": 24,
+        "total": 58
+      }
+    },
+    {
       "name": "Left 4 Dead 2",
       "appid": 550,
       "playtime_forever": 10.3,
@@ -75,19 +88,6 @@
       "achievements": {
         "achieved": 2,
         "total": 17
-      }
-    },
-    {
-      "name": "Resident Evil 7 Biohazard",
-      "appid": 418370,
-      "playtime_forever": 6.7,
-      "img_icon_url": "https://media.steampowered.com/steamcommunity/public/images/apps/418370/675cd2fbaae3c2a74a0c7e9eea71e969ff90d6bb.jpg",
-      "cover_url": "https://cdn.cloudflare.steamstatic.com/steam/apps/418370/header.jpg",
-      "last_played": "2026-09-12 19:27:14",
-      "app_url": "https://store.steampowered.com/app/418370/",
-      "achievements": {
-        "achieved": 20,
-        "total": 58
       }
     },
     {
@@ -199,6 +199,19 @@
       "achievements": {
         "achieved": 0,
         "total": 38
+      }
+    },
+    {
+      "name": "Resident Evil Village",
+      "appid": 1196590,
+      "playtime_forever": 1.4,
+      "img_icon_url": "https://media.steampowered.com/steamcommunity/public/images/apps/1196590/d97fb0681f9517c65a9d7ba9dd7e63f775375645.jpg",
+      "cover_url": "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header.jpg",
+      "last_played": "2026-11-10 22:54:22",
+      "app_url": "https://store.steampowered.com/app/1196590/",
+      "achievements": {
+        "achieved": 3,
+        "total": 56
       }
     },
     {
@@ -507,19 +520,6 @@
       }
     },
     {
-      "name": "Resident Evil Village",
-      "appid": 1196590,
-      "playtime_forever": 0.0,
-      "img_icon_url": "https://media.steampowered.com/steamcommunity/public/images/apps/1196590/d97fb0681f9517c65a9d7ba9dd7e63f775375645.jpg",
-      "cover_url": "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header.jpg",
-      "last_played": "",
-      "app_url": "https://store.steampowered.com/app/1196590/",
-      "achievements": {
-        "achieved": 0,
-        "total": 56
-      }
-    },
-    {
       "name": "Detroit: Become Human",
       "appid": 1222140,
       "playtime_forever": 0.0,
@@ -598,7 +598,7 @@
       "name": "Buckshot Roulette",
       "appid": 2835570,
       "playtime_forever": 0.0,
-      "img_icon_url": "https://media.steampowered.com/steamcommunity/public/images/apps/2835570/81779afdc4209795d9ccf7948514b9a227acf601.jpg",
+      "img_icon_url": "https://media.steampowered.com/steamcommunity/public/images/apps/2835570/b813298efcd6e936076f721365f20b192fbbe556.jpg",
       "cover_url": "https://cdn.cloudflare.steamstatic.com/steam/apps/2835570/header.jpg",
       "last_played": "",
       "app_url": "https://store.steampowered.com/app/2835570/",
