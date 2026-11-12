@@ -143,6 +143,36 @@ function renderPlum(s,p,pl){
   }
 }
 
+function renderPoem(pl,p){
+  var size=Math.max(16,Math.min(23,LB*.095)),lineH=size*1.35;
+  var col1='宝剑锋从磨砺出',col2='梅花香自苦寒来';
+  var totalH=(col1.length-1+col2.length)*lineH;
+  var topY=Math.max(20,Math.min(H*.23,H-totalH-30));
+  var columns=[
+    {text:col1,x:LB*.13,y:topY},
+    {text:col2,x:LB*.87,y:topY+(col1.length-1)*lineH}
+  ];
+  C.save();C.fillStyle=pl.ink;C.textAlign='center';C.textBaseline='middle';
+  C.font='600 '+size+'px "KaiTi","STKaiti","Kaiti SC",serif';
+  var startP=0.05,charInterval=0.06,pauseP=0.08,fade=0.04;
+  for(var c=0;c<columns.length;c++){
+    var col=columns[c];
+    for(var i=0;i<col.text.length;i++){
+      var k=(c===0?0:columns[0].text.length)+i;
+      var tk=startP+k*charInterval+(c>0?pauseP:0);
+      if(p<tk)continue;
+      var a=Math.min(1,(p-tk)/fade);
+      C.save();
+      C.globalAlpha=.9*a;
+      C.translate(col.x+(i%2?1:-1)*size*.025,col.y+i*lineH);
+      C.rotate((i%3-1)*.025);
+      C.fillText(col.text[i],0,0);
+      C.restore();
+    }
+  }
+  C.restore();
+}
+
 function petal(cx,cy,rx,ry,pl,sd){
   C.save();C.fillStyle=pl.bg;C.beginPath();C.moveTo(cx,cy+ry*.58);
   C.bezierCurveTo(cx-rx*1.1,cy+ry*.22,cx-rx*1.1,cy-ry*.65,cx-rx*.2,cy-ry*.88);
@@ -173,6 +203,7 @@ function draw(p){
   C.save();C.beginPath();
   if(LB>0)C.rect(0,0,LB,H);C.clip();
   if(scene.plum)renderPlum(scene.plum,p,pl);
+  renderPoem(pl,p);
   C.restore();
 }
 
