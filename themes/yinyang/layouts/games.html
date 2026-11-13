@@ -39,7 +39,7 @@
           <!-- 最常玩：通栏主打卡片 -->
           <a href="{{ .app_url }}" target="_blank" rel="noopener" class="game-hero">
             <div class="game-cover">
-              <img src="{{ .cover_url }}" alt="{{ .name }}" loading="lazy" />
+              <img src="{{ .cover_url }}" alt="{{ .name }}" loading="lazy" decoding="async" />
             </div>
             <div class="hero-info">
               <span class="hero-eyebrow">玩得最多</span>
@@ -63,7 +63,7 @@
             {{ range after 1 $played }}
             <a href="{{ .app_url }}" target="_blank" rel="noopener" class="game-card">
               <div class="game-cover">
-                <img src="{{ .cover_url }}" alt="{{ .name }}" loading="lazy" />
+                <img src="{{ .cover_url }}" alt="{{ .name }}" loading="lazy" decoding="async" />
               </div>
               <div class="card-info">
                 <h3 class="card-name" title="{{ .name }}">{{ .name }}</h3>
@@ -90,7 +90,7 @@
               {{ range $unplayed }}
               <li>
                 <a href="{{ .app_url }}" target="_blank" rel="noopener">
-                  {{ if .img_icon_url }}<img src="{{ .img_icon_url }}" alt="" loading="lazy" />{{ end }}
+                  {{ if .img_icon_url }}<img src="{{ .img_icon_url }}" alt="" loading="lazy" decoding="async" />{{ end }}
                   <span>{{ .name }}</span>
                 </a>
               </li>

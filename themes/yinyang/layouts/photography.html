@@ -28,7 +28,7 @@
                   <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图：{{ .title }}"
                     data-src="{{ .url }}" data-title="{{ .title }}" data-location="{{ .location }}"
                     data-date="{{ .date }}">
-                    <img src="{{ .url }}" alt="{{ .title | default " 摄影作品" }}" loading="lazy" />
+                    <img src="{{ .url }}" alt="{{ .title | default " 摄影作品" }}" loading="lazy" decoding="async" />
                   </div>
                   {{ if or .title .location .date }}
                   <div class="photo-info">
@@ -51,7 +51,7 @@
             {{ end }}
           </div>
           {{ else }}
-          <p class="photo-empty">暂无摄影记录，请在 <code>data/photography.json</code> 中添加照片数据。</p>
+          <p class="photo-empty">暂无摄影记录，请在 <code>data/photography.yaml</code> 中添加照片数据。</p>
           {{ end }}
 
         </div>

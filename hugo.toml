@@ -62,7 +62,6 @@ tags = [
   headTitle = "Yang Zhang"
   description = "「Read up, Scope out, Eat light, Sleep tight.」"
   favicon = "/favicon.ico"
-  lazyImage = true
   math = true
   siteStartDate = "2025-06-01"
   # google tag.js
