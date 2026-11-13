@@ -15,9 +15,14 @@
     - url: "https://cdn.img.turingzy.cn/2026/20260823214115523.jpg"
       date: "2026-08-23"
       location: "上海 · 泗泾古镇"
+    - url: "https://cdn.img.turingzy.cn/2026/20261113170457405.png"
+      date: "2026-06-22"
+      location: "IEM 科隆 · Counter-Strike"
+      remark: "非本人"
     - url: "https://cdn.img.turingzy.cn/2026/20260418192825965.jpg"
       date: "2026-01-18"
       location: "香港 · 迪士尼"
+      remark: "非本人"
 - year: 2025
   photos:
     - url: "https://cdn.img.turingzy.cn/2025/202512212309518.jpg"

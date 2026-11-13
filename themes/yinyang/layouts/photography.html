@@ -27,19 +27,20 @@
                 <div class="photo-card">
                   <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图{{ with .title }}：{{ . }}{{ else with .location }}：{{ . }}{{ end }}"
                     data-src="{{ .url }}" data-title="{{ .title | default "" }}" data-location="{{ .location }}"
-                    data-date="{{ .date }}">
+                    data-date="{{ .date }}" data-remark="{{ .remark | default "" }}">
                     <img src="{{ .url }}" alt="{{ .title | default (.location | default "摄影作品") }}" loading="lazy" decoding="async" />
                   </div>
-                  {{ if or .title .location .date }}
+                  {{ if or .title .location .date .remark }}
                   <div class="photo-info">
                     {{ with .title }}
                     <span class="photo-title" title="{{ . }}">{{ . }}</span>
                     {{ end }}
-                    {{ if or .location .date }}
+                    {{ if or .location .date .remark }}
                     <span class="photo-meta">
                       {{ with .location }}<span>{{ . }}</span>{{ end }}
                       {{ if and .location .date }}<span class="photo-meta-sep">&nbsp;&nbsp;&nbsp;</span>{{ end }}
                       {{ with .date }}<time datetime="{{ . }}">{{ . }}</time>{{ end }}
+                      {{ with .remark }}<span>({{ . }})</span>{{ end }}
                     </span>
                     {{ end }}
                   </div>

@@ -281,7 +281,7 @@ function goBackOrHome() {
         return {
           src: f.dataset.src || (m && m.src) || '',
           title: f.dataset.title || '',
-          meta: [f.dataset.location, f.dataset.date].filter(Boolean).join('\u00A0\u00A0\u00A0')
+          meta: [f.dataset.location, f.dataset.date, f.dataset.remark ? '(' + f.dataset.remark + ')' : ''].filter(Boolean).join('\u00A0\u00A0\u00A0')
         };
       }), figures.indexOf(fig));
     } else {
