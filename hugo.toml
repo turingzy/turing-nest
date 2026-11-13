@@ -98,6 +98,9 @@ tags = [
   name = "Travel"
   link = "/travel-map/"
 [[params.socials]]
+  name = "Photography"
+  link = "/photography/"
+[[params.socials]]
   name = "About"
   link = "/about/"
 [[params.socials]]

@@ -1,0 +1,42 @@
+[
+  {
+    "year": "2026",
+    "photos": [
+      {
+        "title": "泗泾古桥幽波",
+        "url": "https://cdn.img.turingzy.cn/2026/20260823214115521.jpg",
+        "date": "2026-08-23",
+        "location": "上海 · 泗泾古镇"
+      },
+      {
+        "title": "晨光古刹",
+        "url": "https://cdn.img.turingzy.cn/2026/20260823214115522.jpg",
+        "date": "2026-08-23",
+        "location": "上海 · 福田净寺"
+      },
+      {
+        "title": "水乡楼阁",
+        "url": "https://cdn.img.turingzy.cn/2026/20260823214115523.jpg",
+        "date": "2026-08-23",
+        "location": "上海 · 安方塔旁"
+      }
+    ]
+  },
+  {
+    "year": "2025",
+    "photos": [
+      {
+        "title": "海湾日暮",
+        "url": "https://cdn.img.turingzy.cn/2025/photo-sunset.jpg",
+        "date": "2025-10-04",
+        "location": "广东湛江 · 金沙湾"
+      },
+      {
+        "title": "云端书城",
+        "url": "https://cdn.img.turingzy.cn/2025/photo-bookstore.jpg",
+        "date": "2025-07-15",
+        "location": "广东深圳 · 人才公园"
+      }
+    ]
+  }
+]

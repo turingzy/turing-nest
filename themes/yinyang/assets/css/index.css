@@ -80,11 +80,11 @@ a:hover {
 }
 
 .markdown-body pre {
-  border: 2px solid var(--text-color); 
-  background-color: inherit; 
+  border: 2px solid var(--text-color);
+  background-color: inherit;
   padding: 16px;
   overflow: auto;
-  border-radius: 10px; 
+  border-radius: 10px;
   font-size: 15px;
   position: relative;
 }
@@ -121,7 +121,7 @@ a:hover {
 
 /* reset code */
 
-.markdown-body pre > code {
+.markdown-body pre>code {
   padding: 0;
   font-size: 100%;
   background-color: inherit;
@@ -343,12 +343,17 @@ a:hover {
   display: block;
   margin-right: auto;
   margin-top: 6px;
-  cursor: pointer;
+  cursor: zoom-in;
   transition: opacity 0.2s;
 }
 
 .post-content img:hover {
-  opacity: 0.8;
+  opacity: 0.9;
+}
+
+/* 超链接内的图片（如游戏卡片封面等）使用默认指针，不提示放大灯箱 */
+.post-content a img {
+  cursor: pointer;
 }
 
 .post-content .post-gallery {
@@ -486,12 +491,15 @@ a:hover {
   .markdown-body {
     font-size: 16px;
   }
+
   .post-title {
     font-size: 2rem;
   }
+
   .post-content p {
     letter-spacing: 0.05em;
   }
+
   .post-content .post-gallery img {
     width: 100%;
   }
@@ -550,7 +558,7 @@ a:hover {
   margin: 6px 0;
 }
 
-.toc > ul > li {
+.toc>ul>li {
   font-weight: 600;
   margin-top: 12px;
 }
@@ -591,7 +599,7 @@ a:hover {
     right: 20px;
     z-index: 100;
   }
-  
+
   .toc-toggle {
     display: none;
   }
@@ -603,11 +611,11 @@ a:hover {
     position: static;
     margin-bottom: 30px;
   }
-  
+
   .toc-toggle {
     display: inline-block;
   }
-  
+
   .toc {
     max-width: 100%;
     max-height: 0;
@@ -616,7 +624,7 @@ a:hover {
     border-width: 0 2px;
     transition: max-height 0.3s ease, padding 0.3s ease, border-width 0.3s ease;
   }
-  
+
   .toc.expanded {
     max-height: 70vh;
     overflow-y: auto;
@@ -656,7 +664,9 @@ table {
   overflow-x: auto;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid var(--border-color);
 }
 
@@ -693,79 +703,230 @@ tr:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Image Modal/Lightbox */
-.image-modal {
-  display: none;
+/* ============================================================
+   统一图片沉浸式灯箱（Unified Lightbox）样式
+   ============================================================ */
+.pv-modal {
   position: fixed;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  animation: fadeIn 0.2s;
-}
-
-.image-modal.active {
+  inset: 0;
+  z-index: 9999;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #f3f4f6;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.image-modal-content {
+.pv-modal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* 深色高斯模糊暗室背景 */
+.pv-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 1;
+}
+
+/* 顶部导航条：计数器与关闭按钮 */
+.pv-topbar {
   position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+}
+
+.pv-counter {
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+}
+
+.pv-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-height: 90vh;
-  overflow: auto;
-  scrollbar-width: none;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.image-modal-content::-webkit-scrollbar {
-  display: none;
+.pv-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transform: scale(1.05);
 }
 
-.image-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
+.pv-btn:active {
+  transform: scale(0.95);
+}
+
+.pv-btn:focus-visible,
+.pv-nav:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+}
+
+/* 主展示舞台 */
+.pv-stage {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 左右切换箭头按钮 */
+.pv-nav {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  z-index: 2001;
-  transition: color 0.2s;
+  flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
-.image-modal-close:hover {
-  color: #ccc;
+.pv-nav:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+  transform: scale(1.08);
 }
 
-.image-modal-img {
-  width: 100%;
-  height: auto;
+.pv-nav:active {
+  transform: scale(0.95);
+}
+
+/* 图片容器与大图自适应 */
+.pv-frame {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 1.5rem;
+  min-width: 0;
+}
+
+.pv-img {
+  max-width: 100%;
+  max-height: calc(100vh - 160px);
   object-fit: contain;
-  border-radius: 4px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  transform: scale(1);
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+  will-change: transform, opacity;
 }
 
-.image-modal-controls {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 8px 16px;
-  border-radius: 4px;
-  z-index: 2002;
-  color: white;
-  font-size: 13px;
-  display: none;
+.pv-modal:not(.active) .pv-img {
+  transform: scale(0.96);
 }
 
-.zoom-percentage {
+.pv-img.pv-switching {
+  opacity: 0.2;
+  transform: scale(0.98);
+}
+
+/* 单张图片模式：隐藏导航按钮与计数器 */
+.pv-modal.is-single .pv-nav,
+.pv-modal.is-single .pv-counter {
+  display: none !important;
+}
+
+/* 底部图注信息 */
+.pv-bottombar {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  display: none;
+  padding: 1rem 2rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  pointer-events: none;
+}
+
+.pv-modal:not(.has-caption) .pv-bottombar {
+  display: none !important;
+}
+
+.pv-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+.pv-meta {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 移动端触屏适配 */
+@media (max-width: 640px) {
+  .pv-topbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .pv-stage {
+    padding: 0 0.5rem;
+  }
+
+  .pv-frame {
+    padding: 0;
+  }
+
+  .pv-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pv-nav svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pv-bottombar {
+    padding: 0.6rem 1rem 1.2rem;
+  }
+
+  .pv-title {
+    font-size: 0.95rem;
+  }
+
+  .pv-meta {
+    font-size: 0.75rem;
+  }
 }
 
 @keyframes fadeIn {
@@ -860,7 +1021,9 @@ tr:hover {
 }
 
 /* Theme toggle - circle-blur-top-left (View Transitions API) */
-html { view-transition-name: root; }
+html {
+  view-transition-name: root;
+}
 
 ::view-transition-group(root) {
   animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -931,8 +1094,12 @@ html { view-transition-name: root; }
 }
 
 @keyframes search-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes search-slide-down {
@@ -1096,4 +1263,3 @@ html { view-transition-name: root; }
 [data-theme="dark"] .search-highlight {
   background-color: rgba(0, 229, 255, 0.28);
 }
-

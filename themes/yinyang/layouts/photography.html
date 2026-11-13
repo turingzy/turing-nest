@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default " zh-CN" }}">
+{{ partial "head.html" . }}
+
+<body>
+  <article class="post {{ .Site.Language.LanguageName }}" id="article">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="site-header">{{ partial "header.html" . }}</div>
+        <header class="post-header">
+          <h1 class="post-title">{{ .Title }}</h1>
+        </header>
+        <div class="post-content markdown-body">
+          {{ .Content }}
+
+          {{ $gallery := hugo.Data.photography | default (slice) }}
+
+          {{ if gt (len $gallery) 0 }}
+          <!-- 年份摄影多列网格 -->
+          <div class="photo-container">
+            {{ range $gallery }}
+            <section class="photo-year-group">
+              <h2 class="photo-year-heading">{{ .year }}</h2>
+
+              <div class="photo-grid">
+                {{ range .photos }}
+                <div class="photo-card">
+                  <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图：{{ .title }}"
+                    data-src="{{ .url }}" data-title="{{ .title }}" data-location="{{ .location }}"
+                    data-date="{{ .date }}">
+                    <img src="{{ .url }}" alt="{{ .title | default " 摄影作品" }}" loading="lazy" />
+                  </div>
+                  {{ if or .title .location .date }}
+                  <div class="photo-info">
+                    {{ with .title }}
+                    <span class="photo-title" title="{{ . }}">{{ . }}</span>
+                    {{ end }}
+                    {{ if or .location .date }}
+                    <span class="photo-meta">
+                      {{ with .location }}<span>{{ . }}</span>{{ end }}
+                      {{ if and .location .date }}<span class="photo-meta-sep">&nbsp;&nbsp;&nbsp;</span>{{ end }}
+                      {{ with .date }}<time datetime="{{ . }}">{{ . }}</time>{{ end }}
+                    </span>
+                    {{ end }}
+                  </div>
+                  {{ end }}
+                </div>
+                {{ end }}
+              </div>
+            </section>
+            {{ end }}
+          </div>
+          {{ else }}
+          <p class="photo-empty">暂无摄影记录，请在 <code>data/photography.json</code> 中添加照片数据。</p>
+          {{ end }}
+
+        </div>
+        {{ partial "footer.html" . }}
+        <a href="{{ " /" | relLangURL }}" class="back-btn">Back</a>
+      </div>
+    </div>
+  </article>
+
+  <style>
+    /* 年份区块 */
+    .photo-container {
+      margin: 1.5rem 0 3rem;
+    }
+
+    .photo-year-group {
+      margin-bottom: 2.8rem;
+    }
+
+    .photo-year-heading {
+      font-size: 1.35em;
+      font-weight: 700;
+      border: none;
+      padding: 0;
+      margin: 0 0 1.2rem;
+      color: var(--text-color);
+      letter-spacing: 0.02em;
+    }
+
+    /* 一行至少三张的网格布局 */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+    }
+
+    /* 单张照片卡片：纯净无边框 */
+    .photo-card {
+      border: none;
+      background: transparent;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* 照片图框，保持 4:3 黄金比例 */
+    .photo-figure {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: color-mix(in srgb, var(--text-color) 4%, transparent);
+      border-radius: 2px;
+      cursor: zoom-in;
+    }
+
+    .post-content .photo-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      margin: 0 !important;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .post-content .photo-figure:hover img {
+      opacity: 0.92;
+      transform: scale(1.02);
+    }
+
+    /* 底部极简标题与元信息：无边框分割 */
+    .photo-info {
+      padding: 0.45rem 0.1rem 0.2rem;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      background: transparent;
+    }
+
+    .photo-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-color);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+
+    .photo-meta {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.3;
+    }
+
+    .photo-empty {
+      color: var(--text-secondary);
+      font-style: italic;
+      padding: 2rem 0;
+    }
+
+    /* 针对手机等超小屏幕的自适应，平板及桌面端始终至少 3 列 */
+    @media (max-width: 520px) {
+      .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+      }
+
+      .photo-info {
+        padding: 0.35rem 0.45rem;
+      }
+
+      .photo-title {
+        font-size: 0.8rem;
+      }
+
+      .photo-meta {
+        font-size: 0.68rem;
+      }
+    }
+  </style>
+
+  {{ partial "scripts.html" . }}
+</body>
+
+</html>

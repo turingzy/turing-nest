@@ -19,27 +19,30 @@ There is no package manager, Makefile, linter, or test suite configured. A succe
 ## Repository Structure
 
 - `content/posts/<category>/` contains posts grouped into categories such as algorithm, backend-development, copy, film-review, others, and travel.
-- `content/about.md`, `content/games.md`, and `content/travel-map.md` are the current top-level content pages.
-- `data/` contains `games.json`, `travel-spots.json`, and `china-provinces.json`, which provide data to the games page and travel map.
-- `themes/yinyang/layouts/` contains all page layouts and templates (including `games.html`, `travel-map.html`, `404.html`, `terms.html`, and `index.json`).
-- `themes/yinyang/` contains the full theme, styling, and customizations.
+- `content/about.md`, `content/games.md`, `content/travel-map.md`, and `content/photography.md` are the top-level content pages.
+- `data/` contains `games.json`, `travel-spots.json`, `china-provinces.json`, and `photography.json`, providing structured data to dedicated pages.
+- `themes/yinyang/layouts/` contains custom page layouts (including `games.html`, `travel-map.html`, `photography.html`, `404.html`, `terms.html`, and `index.json`).
+- `themes/yinyang/` contains the full theme, styling (`assets/css/index.css`), and templates.
 - `static/` contains files copied directly to the generated site.
 - `archetypes/default.md` defines the front matter template for new posts.
 
 ## Content Conventions
 
-Posts use YAML front matter. Preserve the existing fields and style, especially `title`, `slug`, `categories`, and `date`, when editing or creating content. Keep post URLs stable unless a URL change is intentional.
+Posts use YAML front matter. Preserve existing fields and style (`title`, `slug`, `categories`, `date`) when editing or creating content. Keep post URLs stable (`/posts/:slug/`).
 
 ## Theme Customizations
 
-The local YinYang partials currently provide:
+Key YinYang partials and components:
 
-- `head.html`: KaTeX support, analytics, and Font Awesome assets
-- `header.html`: light/dark theme switching
-- `single.html`: table of contents and scroll-spy behavior
-- `scripts.html`: image lightbox and zoom behavior
-- `heatmap.html`: the GitHub-style contribution heatmap on the home page
-- `giscus.html`: comments backed by GitHub Discussions
+- `head.html`: Theme flash prevention, KaTeX math support, and meta/SEO tags
+- `header.html`: Navigation, light/dark theme switching, and search trigger
+- `search.html`: Lightweight client-side fuzzy search powered by `index.json`
+- `single.html`: Table of contents, scroll-spy behavior, and post layout
+- `scripts.html`: Unified gallery image lightbox (grouping, touch swipe, metadata, link bypass) and external link exit confirmation
+- `ink-plum.html`: Homepage canvas-based ink plum blossom interactive animation and poetry
+- `heatmap.html`: GitHub-style contribution heatmap on the homepage
+- `related.html`: Weighted related post recommendations
+- `giscus.html`: Comments backed by GitHub Discussions
 
 Prefer extending the existing theme override points and page templates. Avoid modifying generated files under `public/`.
 
@@ -48,7 +51,9 @@ Prefer extending the existing theme override points and page templates. Avoid mo
 - The canonical site URL is `https://blog.turingzy.cn`.
 - The main content section is `posts`.
 - Markdown permits inline math delimited by `$...$`; code highlighting uses the Monokai style with line numbers.
-- Images are lazy-loaded where supported and commonly hosted at `cdn.img.turingzy.cn`.
+- Math typesetting uses KaTeX (loaded on demand for formula-bearing pages).
+- Search index is generated at build time via `layouts/index.json` and fetched on demand.
+- Images are commonly hosted on `cdn.img.turingzy.cn`. Regular content images and photography cards open in the unified lightbox, while images wrapped in `<a>` bypass it.
 - Giscus comments use the `turingzy-dev/blog-giscus` repository.
 - Permalinks for posts use `/posts/:slug/`.
 
