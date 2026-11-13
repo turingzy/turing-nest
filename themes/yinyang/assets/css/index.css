@@ -796,6 +796,8 @@ tr:hover {
 
 /* 左右切换箭头按钮 */
 .pv-nav {
+  position: relative;
+  z-index: 1;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.85);
@@ -837,7 +839,7 @@ tr:hover {
   max-height: calc(100vh - 160px);
   object-fit: contain;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
-  transform: scale(1);
+  transform: scale(var(--pv-zoom, 1));
   transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: default;
   will-change: transform, opacity;
@@ -845,6 +847,10 @@ tr:hover {
 
 .pv-modal:not(.active) .pv-img {
   transform: scale(0.96);
+}
+
+.pv-img.pv-zooming {
+  transition: opacity 0.2s ease;
 }
 
 .pv-img.pv-switching {
