@@ -25,10 +25,10 @@
               <div class="photo-grid">
                 {{ range .photos }}
                 <div class="photo-card">
-                  <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图：{{ .title }}"
-                    data-src="{{ .url }}" data-title="{{ .title }}" data-location="{{ .location }}"
+                  <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图{{ with .title }}：{{ . }}{{ else with .location }}：{{ . }}{{ end }}"
+                    data-src="{{ .url }}" data-title="{{ .title | default "" }}" data-location="{{ .location }}"
                     data-date="{{ .date }}">
-                    <img src="{{ .url }}" alt="{{ .title | default " 摄影作品" }}" loading="lazy" decoding="async" />
+                    <img src="{{ .url }}" alt="{{ .title | default (.location | default "摄影作品") }}" loading="lazy" decoding="async" />
                   </div>
                   {{ if or .title .location .date }}
                   <div class="photo-info">
@@ -56,7 +56,7 @@
 
         </div>
         {{ partial "footer.html" . }}
-        <a href="{{ " /" | relLangURL }}" class="back-btn">Back</a>
+        <a href="{{ "/" | relLangURL }}" class="back-btn">Back</a>
       </div>
     </div>
   </article>
