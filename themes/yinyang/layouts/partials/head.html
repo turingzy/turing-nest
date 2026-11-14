@@ -42,7 +42,7 @@
   <meta property="og:description" content="{{ default .Summary .Description | plainify }}" />
   <meta name="description" content="{{ default .Summary .Description | plainify }}" />
   {{- end }}
-  <meta property="og:locale" content="{{ .Site.LanguageCode }}" />
+  <meta property="og:locale" content="{{ .Site.Language.Locale }}" />
   {{- if .Params.album -}}
   <meta property="og:image" content="{{ .Params.album }}" />
   {{- else -}}
@@ -65,7 +65,8 @@
   <link rel=%q type=%q href=%q title=%q>` .Rel .MediaType.Type .Permalink site.Title | safeHTML }}
   {{ end }}
 
-  {{ if and (not .IsHome) (.Param "math") }}
+  {{ $hasMath := and (not .IsHome) (or .Params.math (strings.Contains .RawContent "$")) }}
+  {{ if $hasMath }}
   {{ partialCached "math.html" . }}
   {{ end }}
 
@@ -78,5 +79,7 @@
   <link rel="me" href="https://mastodon.social/@turingzy" />
 
   {{ if .Site.Params.TwitterCards }}{{ template "_internal/twitter_cards.html" . }}{{ end }}
+  {{ if hugo.IsProduction }}
   {{ .Site.Params.extraHead | safeHTML }}
+  {{ end }}
 </head>

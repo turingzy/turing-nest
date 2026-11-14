@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode | default " zh-CN" }}">
+<html lang="{{ .Site.Language.Locale | default "zh-CN" }}">
 {{ partial "head.html" . }}
 
 <body>
-  <article class="post {{ .Site.Language.LanguageName }}" id="article">
+  <article class="post {{ .Site.Language.Label }}" id="article">
     <div class="row">
       <div class="col-xs-12">
         <div class="site-header">{{ partial "header.html" . }}</div>
@@ -18,17 +18,18 @@
           {{ if gt (len $gallery) 0 }}
           <!-- 年份摄影多列网格 -->
           <div class="photo-container">
-            {{ range $gallery }}
+            {{ range $gIdx, $g := $gallery }}
             <section class="photo-year-group">
               <h2 class="photo-year-heading">{{ .year }}</h2>
 
               <div class="photo-grid">
-                {{ range .photos }}
+                {{ range $pIdx, $p := .photos }}
+                {{ $isPriority := and (eq $gIdx 0) (lt $pIdx 3) }}
                 <div class="photo-card">
                   <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图{{ with .title }}：{{ . }}{{ else with .location }}：{{ . }}{{ end }}"
                     data-src="{{ .url }}" data-title="{{ .title | default "" }}" data-location="{{ .location }}"
                     data-date="{{ .date }}" data-remark="{{ .remark | default "" }}">
-                    <img src="{{ .url }}" alt="{{ .title | default (.location | default "摄影作品") }}" loading="lazy" decoding="async" />
+                    <img src="{{ .url }}" alt="{{ .title | default (.location | default "摄影作品") }}" loading="{{ if $isPriority }}eager{{ else }}lazy{{ end }}" {{ if $isPriority }}fetchpriority="high"{{ end }} decoding="async" />
                   </div>
                   {{ if or .title .location .date .remark }}
                   <div class="photo-info">
@@ -70,6 +71,8 @@
 
     .photo-year-group {
       margin-bottom: 2.8rem;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 500px;
     }
 
     .photo-year-heading {

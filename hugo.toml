@@ -1,6 +1,6 @@
 # 部署的时候还需要注意 Cloudflare 使用的 Hugo 和本地版本一致
 baseURL = 'https://blog.turingzy.cn'
-languageCode = 'zh-CN'
+locale = 'zh-CN'
 title = 'TuringNest'
 theme = 'yinyang'
 license = "MIT"

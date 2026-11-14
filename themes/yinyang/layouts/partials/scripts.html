@@ -72,32 +72,41 @@ function goBackOrHome() {
     var urlEl = document.getElementById('ext-link-modal-url');
     if (!modal || !urlEl) return;
     urlEl.textContent = url;
-    modal.classList.add('active');
     modal._targetUrl = url;
+    if (typeof modal.showModal === 'function') {
+      if (!modal.open) modal.showModal();
+    } else {
+      modal.setAttribute('open', '');
+    }
   }
 
   function hideConfirm() {
     var modal = document.getElementById('ext-link-modal');
     if (modal) {
-      modal.classList.remove('active');
+      if (typeof modal.close === 'function') {
+        if (modal.open) modal.close();
+      } else {
+        modal.removeAttribute('open');
+      }
       modal._targetUrl = '';
     }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    // Create modal DOM
-    var modal = document.createElement('div');
+    // Create modal DOM using native <dialog>
+    var modal = document.createElement('dialog');
     modal.id = 'ext-link-modal';
     modal.className = 'ext-link-modal';
+    modal.setAttribute('aria-label', '即将离开本站');
     modal.innerHTML =
-      '<div class="ext-link-modal-box">' +
+      '<form method="dialog" class="ext-link-modal-box">' +
         '<h3 class="ext-link-modal-title">即将离开本站</h3>' +
         '<div class="ext-link-modal-url" id="ext-link-modal-url"></div>' +
         '<div class="ext-link-modal-actions">' +
-          '<button class="ext-link-modal-btn" id="ext-link-cancel">取消</button>' +
-          '<button class="ext-link-modal-btn primary" id="ext-link-confirm">继续访问</button>' +
+          '<button type="button" class="ext-link-modal-btn" id="ext-link-cancel">取消</button>' +
+          '<button type="button" class="ext-link-modal-btn primary" id="ext-link-confirm">继续访问</button>' +
         '</div>' +
-      '</div>';
+      '</form>';
     document.body.appendChild(modal);
 
     // Button events
@@ -108,14 +117,13 @@ function goBackOrHome() {
       if (url) window.open(url, '_blank', 'noopener');
     });
 
-    // Click overlay to close
+    // Click backdrop to close (light-dismiss)
     modal.addEventListener('click', function(e) {
       if (e.target === modal) hideConfirm();
     });
 
-    // Escape to close
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') hideConfirm();
+    modal.addEventListener('close', function() {
+      modal._targetUrl = '';
     });
 
     // Intercept external link clicks

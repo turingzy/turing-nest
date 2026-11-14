@@ -179,6 +179,22 @@
     display: block;
 }
 
+/* 现代 CSS Anchor Positioning（锚点定位）渐进增强 */
+@supports (anchor-name: --hovered-day) {
+    .heatmap_day:hover {
+        anchor-name: --hovered-day;
+    }
+    .heatmap_tooltip.is-visible {
+        position: fixed;
+        position-anchor: --hovered-day;
+        bottom: anchor(top);
+        left: anchor(center);
+        transform: translateX(-50%) translateY(-6px);
+        position-try-fallbacks: flip-block;
+        margin: 0;
+    }
+}
+
 .heatmap_tooltip_date {
     display: block;
     font-size: 11px;
@@ -270,7 +286,13 @@
         positionTooltip(ev);
     }
 
+    var supportsAnchor = (window.CSS && CSS.supports && CSS.supports('anchor-name', '--test'));
     function positionTooltip(ev) {
+        if (supportsAnchor) {
+            tooltip.style.left = '';
+            tooltip.style.top = '';
+            return;
+        }
         var rect = ev.target.getBoundingClientRect();
         var tw = tooltip.offsetWidth;
         var th = tooltip.offsetHeight;

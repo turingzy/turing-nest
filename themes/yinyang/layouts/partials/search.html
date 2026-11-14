@@ -1,6 +1,5 @@
-<div id="search-modal" class="search-modal" aria-hidden="true" style="display: none;">
-  <div class="search-backdrop" id="search-backdrop"></div>
-  <div class="search-container" role="dialog" aria-modal="true" aria-label="搜索文章">
+<dialog id="search-modal" class="search-modal" aria-label="搜索文章">
+  <div class="search-container">
     <div class="search-header">
       <svg class="search-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
@@ -13,7 +12,7 @@
     </div>
     <div id="search-results" class="search-results"></div>
   </div>
-</div>
+</dialog>
 
 <script>
 (function() {
@@ -21,7 +20,6 @@
   let isLoading = false;
 
   const modal = document.getElementById('search-modal');
-  const backdrop = document.getElementById('search-backdrop');
   const input = document.getElementById('search-input');
   const closeBtn = document.getElementById('search-close');
   const resultsContainer = document.getElementById('search-results');
@@ -51,9 +49,11 @@
   }
 
   function openSearch() {
-    modal.style.display = 'block';
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    if (typeof modal.showModal === 'function') {
+      if (!modal.open) modal.showModal();
+    } else {
+      modal.setAttribute('open', '');
+    }
     loadIndex(function() {
       input.focus();
       if (input.value.trim()) {
@@ -66,15 +66,17 @@
   }
 
   function closeSearch() {
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    if (typeof modal.close === 'function') {
+      if (modal.open) modal.close();
+    } else {
+      modal.removeAttribute('open');
+    }
     input.value = '';
     resultsContainer.innerHTML = '';
   }
 
   function toggleSearch() {
-    if (modal.style.display === 'block') {
+    if (modal.open) {
       closeSearch();
     } else {
       openSearch();
@@ -89,14 +91,18 @@
   }
 
   if (closeBtn) closeBtn.addEventListener('click', closeSearch);
-  if (backdrop) backdrop.addEventListener('click', closeSearch);
 
-  // Shortcut: Esc to close search modal
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && modal.style.display === 'block') {
-      e.preventDefault();
+  // Click on dialog backdrop to close (light-dismiss)
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
       closeSearch();
     }
+  });
+
+  // Native cancel/close cleanup
+  modal.addEventListener('close', function() {
+    input.value = '';
+    resultsContainer.innerHTML = '';
   });
 
   // Close search modal when clicking any search result link

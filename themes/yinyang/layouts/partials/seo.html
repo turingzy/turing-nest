@@ -14,7 +14,7 @@
       {{- else -}}
       "description" : "{{ default .Summary .Description | plainify }}",
       {{- end }}
-      "inLanguage" : "{{ .Site.LanguageCode | default "zh-CN" }}",
+      "inLanguage" : "{{ .Site.Language.Locale | default "zh-CN" }}",
       "author" : "{{ .Site.Params.author.name }}",
       "creator" : "{{ .Site.Params.author.name }}",
       "publisher": "{{ .Site.Params.author.name }}",

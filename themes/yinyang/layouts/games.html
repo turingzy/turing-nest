@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode | default "zh-CN" }}">
+<html lang="{{ .Site.Language.Locale | default "zh-CN" }}">
 {{ partial "head.html" . }}
 
 <body>
-  <article class="post {{ .Site.Language.LanguageName }}" id="article">
+  <article class="post {{ .Site.Language.Label }}" id="article">
     <div class="row">
       <div class="col-xs-12">
         <div class="site-header">{{ partial "header.html" . }}</div>
@@ -39,7 +39,7 @@
           <!-- 最常玩：通栏主打卡片 -->
           <a href="{{ .app_url }}" target="_blank" rel="noopener" class="game-hero">
             <div class="game-cover">
-              <img src="{{ .cover_url }}" alt="{{ .name }}" loading="lazy" decoding="async" />
+              <img src="{{ .cover_url }}" alt="{{ .name }}" loading="eager" fetchpriority="high" decoding="async" />
             </div>
             <div class="hero-info">
               <span class="hero-eyebrow">玩得最多</span>
@@ -255,6 +255,8 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 240px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -293,6 +295,7 @@
       text-underline-offset: 3px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
+      line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
