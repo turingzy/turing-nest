@@ -26,21 +26,20 @@
                 {{ range $pIdx, $p := .photos }}
                 {{ $isPriority := and (eq $gIdx 0) (lt $pIdx 3) }}
                 <div class="photo-card">
-                  <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图{{ with .title }}：{{ . }}{{ else with .location }}：{{ . }}{{ end }}"
-                    data-src="{{ .url }}" data-title="{{ .title | default "" }}" data-location="{{ .location }}"
-                    data-date="{{ .date }}" data-remark="{{ .remark | default "" }}">
-                    <img src="{{ .url }}" alt="{{ .title | default (.location | default "摄影作品") }}" loading="{{ if $isPriority }}eager{{ else }}lazy{{ end }}" {{ if $isPriority }}fetchpriority="high"{{ end }} decoding="async" />
+                  <div class="photo-figure" role="button" tabindex="0" aria-label="查看大图{{ with .title }}：{{ . }}{{ end }}"
+                    data-src="{{ .url }}" data-title="{{ .title | default "" }}"
+                    data-date="{{ .date | default "" }}" data-remark="{{ .remark | default "" }}">
+                    <img src="{{ .url }}" alt="{{ .title | default "摄影作品" }}" loading="{{ if $isPriority }}eager{{ else }}lazy{{ end }}" {{ if $isPriority }}fetchpriority="high"{{ end }} decoding="async" />
                   </div>
-                  {{ if or .title .location .date .remark }}
+                  {{ if or .title .date .remark }}
                   <div class="photo-info">
                     {{ with .title }}
-                    <span class="photo-title" title="{{ . }}">{{ . }}</span>
+                    <span class="photo-title">{{ . }}</span>
                     {{ end }}
-                    {{ if or .location .date .remark }}
+                    {{ if or .date .remark }}
                     <span class="photo-meta">
-                      {{ with .location }}<span>{{ . }}</span>{{ end }}
-                      {{ if and .location .date }}<span class="photo-meta-sep">&nbsp;&nbsp;&nbsp;</span>{{ end }}
-                      {{ with .date }}<time datetime="{{ . }}">{{ . }}</time>{{ end }}
+                      {{ with .date }}<time>{{ . }}</time>{{ end }}
+                      {{ if and .date .remark }}<span class="photo-meta-sep">&nbsp;</span>{{ end }}
                       {{ with .remark }}<span>({{ . }})</span>{{ end }}
                     </span>
                     {{ end }}
@@ -143,12 +142,14 @@
 
     .photo-title {
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: normal;
       color: var(--text-color);
-      white-space: nowrap;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
+      word-break: break-word;
     }
 
     .photo-meta {
