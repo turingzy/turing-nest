@@ -42,14 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function goBackOrHome() {
-  if (history.length > 1) {
-    history.back();
-  } else {
-    window.location.href = '/';
-  }
-}
-
 // External link confirmation modal
 (function() {
   var siteDomain = 'turingzy.cn';
@@ -308,3 +300,4 @@ function goBackOrHome() {
   });
 })();
 </script>
+{{ partial "sponsor.html" . }}

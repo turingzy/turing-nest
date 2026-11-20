@@ -49,7 +49,7 @@
   <meta property="og:image" content="{{ .Site.Params.favicon }}" />
   {{ end }}
 
-  {{ with resources.Get "css/index.css" | minify }}
+  {{ with slice (resources.Get "css/index.css") (resources.Get "css/sponsor.css") | resources.Concat "css/index.css" | minify }}
   <link rel="stylesheet" href="{{ .Permalink }}">
   {{ end }}
   {{ with resources.Get "css/flexboxgrid-6.3.1.min.css" | minify }}

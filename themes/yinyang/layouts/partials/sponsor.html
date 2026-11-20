@@ -1,0 +1,127 @@
+<button id="sponsor-btn" class="sponsor-btn" type="button" aria-label="Support me" aria-expanded="false" aria-controls="sponsor-popover" title="Support me / 赞赏支持">
+  <img class="sponsor-btn-icon" src="{{ "images/kofi-logo.png" | relURL }}" alt="" width="22" height="18" />
+  <span>Support me</span>
+</button>
+
+<div id="sponsor-popover" class="sponsor-popover" role="dialog" aria-label="Support me" hidden>
+  <div class="sponsor-header">
+    <div class="sponsor-title">
+      <img src="{{ "images/kofi-logo.png" | relURL }}" alt="" width="20" height="16" />
+      <span>Support me</span>
+    </div>
+    <button type="button" id="sponsor-close" class="sponsor-close-btn" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="sponsor-tabs" role="group" aria-label="打赏地区">
+    <button type="button" class="sponsor-tab" data-tab="world" aria-pressed="true">Global</button>
+    <button type="button" class="sponsor-tab" data-tab="chinese" aria-pressed="false">中国大陆</button>
+  </div>
+
+  <div id="sponsor-panel-chinese" class="sponsor-tab-panel" hidden>
+    <div class="sponsor-sub-tabs" role="group" aria-label="支付方式">
+      <button type="button" class="sponsor-sub-tab" data-src="{{ "images/wechat-pay.jpg" | relURL }}" data-alt="微信赞赏码" aria-pressed="true">微信</button>
+      <button type="button" class="sponsor-sub-tab" data-src="{{ "images/alipay.jpg" | relURL }}" data-alt="支付宝收款码" aria-pressed="false">支付宝</button>
+    </div>
+
+    <div class="sponsor-qr-box">
+      <img id="sponsor-qr-img" class="sponsor-qr-img" src="{{ "images/wechat-pay.jpg" | relURL }}" alt="微信赞赏码" />
+    </div>
+
+    <p class="sponsor-hint">非常感谢支持我的博客！很高兴你喜欢我的内容。祝你度过美好开心的一天！</p>
+  </div>
+
+  <div id="sponsor-panel-world" class="sponsor-tab-panel">
+    <div class="sponsor-kofi-iframe-wrap" aria-busy="true">
+      <div class="sponsor-kofi-loader" role="status">
+        <img src="{{ "images/kofi-logo.png" | relURL }}" alt="" width="32" height="26" />
+        <span>Connecting to Ko-fi...</span>
+      </div>
+      <iframe
+        id="kofiframe"
+        data-src="https://ko-fi.com/turingzy/?widget=true&embed=true&preview=true&hidefeed=true"
+        scrolling="no"
+        height="712"
+        allow="payment"
+        title="turingzy">
+      </iframe>
+    </div>
+    <div class="sponsor-kofi-fallback">
+      <a href="https://ko-fi.com/turingzy" target="_blank" rel="noopener noreferrer">
+        Open Ko-fi in new tab
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const popover = document.getElementById('sponsor-popover');
+  const openBtn = document.getElementById('sponsor-btn');
+  const closeBtn = document.getElementById('sponsor-close');
+  const panels = popover.querySelectorAll('.sponsor-tab-panel');
+  const qrImg = document.getElementById('sponsor-qr-img');
+  const kofiFrame = document.getElementById('kofiframe');
+
+  function loadKofi() {
+    if (!kofiFrame.hasAttribute('src')) kofiFrame.src = kofiFrame.dataset.src;
+  }
+
+  kofiFrame.addEventListener('load', function() {
+    if (!kofiFrame.hasAttribute('src')) return;
+    kofiFrame.parentElement.setAttribute('aria-busy', 'false');
+  });
+
+  function setOpen(open) {
+    popover.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    if (open) {
+      selectRegion(popover.querySelector('[data-tab="world"]'));
+      document.getElementById('sponsor-panel-world').scrollTop = 0;
+      closeBtn.focus();
+    } else if (popover.contains(document.activeElement)) openBtn.focus();
+  }
+
+  openBtn.addEventListener('click', function() {
+    setOpen(popover.hidden);
+  });
+  closeBtn.addEventListener('click', function() { setOpen(false); });
+  document.addEventListener('click', function(e) {
+    if (!popover.hidden && !popover.contains(e.target) && !openBtn.contains(e.target)) {
+      setOpen(false);
+    }
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !popover.hidden) setOpen(false);
+  });
+
+  function bindChoices(selector, onSelect) {
+    const buttons = popover.querySelectorAll(selector);
+    function select(button) {
+      buttons.forEach(function(item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+      onSelect(button);
+    }
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function() { select(button); });
+    });
+    return select;
+  }
+
+  const selectRegion = bindChoices('.sponsor-tab', function(button) {
+    panels.forEach(function(panel) {
+      panel.hidden = panel.id !== 'sponsor-panel-' + button.dataset.tab;
+    });
+    if (button.dataset.tab === 'world') loadKofi();
+  });
+  bindChoices('.sponsor-sub-tab', function(button) {
+    qrImg.src = button.dataset.src;
+    qrImg.alt = button.dataset.alt;
+  });
+})();
+</script>
