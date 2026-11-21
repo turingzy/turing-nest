@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.Language.Locale | default "zh-CN" }}">
-{{ partial "head.html" . }}
-
-<body>
-  <article class="posts">
+{{ define "main" }}
+<article class="posts">
     <div class="row">
       <div class="col-xs-12">
         {{ partial "header.html" . }}
@@ -23,8 +19,4 @@
       </div>
     </div>
   </article>
-
-  {{ partial "scripts.html" . }}
-</body>
-
-</html>
+{{ end }}

@@ -1,0 +1,204 @@
+#travel-map {
+  width: 100%;
+  height: 65vh;
+  min-height: 460px;
+}
+
+:root {
+  --travel-accent: #16a34a;
+}
+
+[data-theme="dark"] {
+  --travel-accent: #4ade80;
+}
+
+.travel-intro {
+  color: var(--text-secondary);
+}
+
+.travel-intro b {
+  color: var(--travel-accent);
+  font-size: 1.2em;
+}
+
+/* ---- 足迹时间线 ---- */
+.travel-log {
+  margin-top: 2.5rem;
+}
+
+.travel-log-title {
+  font-size: 1.1em;
+  border: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.travel-log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.travel-log-list::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  border-left: 2px dashed color-mix(in srgb, var(--text-color) 25%, transparent);
+}
+
+.travel-log-item {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding: 0.2rem 0.5rem 0.2rem 0;
+  margin: 0;
+}
+
+.travel-log-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text-color) 35%, var(--bg-color));
+  border: 2px solid var(--bg-color);
+  margin-top: 0.5em;
+  position: relative;
+  z-index: 1;
+  transition: background 0.15s ease;
+}
+
+.travel-log-item:hover .travel-log-dot {
+  background: var(--travel-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--travel-accent) 45%, transparent);
+}
+
+.travel-log-item:hover .travel-log-name {
+  color: var(--travel-accent);
+}
+
+.travel-log-body {
+  min-width: 0;
+}
+
+.post-content .travel-log-head {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.travel-log-name {
+  font-weight: bold;
+}
+
+.travel-log-date {
+  margin-left: 0.7em;
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.post-content .travel-log-posts {
+  margin: 0 0 0.15rem;
+  font-size: 0.82em;
+  line-height: 1.8;
+}
+
+.post-content .travel-log-posts a {
+  color: var(--travel-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-right: 1em;
+}
+
+/* ---- 地图 ---- */
+#travel-map {
+  border: 1px solid var(--border-color);
+}
+
+.leaflet-container {
+  background: var(--bg-color);
+  font-family: inherit;
+}
+
+.leaflet-container .leaflet-interactive,
+.leaflet-container path {
+  outline: none;
+}
+
+/* 城市名：比省份名稍淡，默认不显示，点击圆环后出现 */
+.leaflet-tooltip.travel-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: color-mix(in srgb, var(--text-color) 70%, transparent);
+  font-weight: bold;
+  font-size: 12px;
+  padding: 0;
+}
+
+.leaflet-tooltip-top::before,
+.leaflet-tooltip-bottom::before,
+.leaflet-tooltip-left::before,
+.leaflet-tooltip-right::before {
+  border: none;
+}
+
+/* 省份名：纯文字，无边框弹窗 */
+.leaflet-tooltip.travel-region-tip {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+}
+
+.leaflet-top.leaflet-left .leaflet-control {
+  margin: 10px 0 0 10px !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+
+.leaflet-control-zoom a,
+.home-button {
+  box-sizing: border-box !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 1 !important;
+  font-size: 16px !important;
+  font-family: Arial, sans-serif !important;
+  background-color: var(--bg-color) !important;
+  border: 1px solid color-mix(in srgb, var(--text-color) 30%, transparent) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-secondary) !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  margin: 0 0 6px 0 !important;
+  padding: 0 !important;
+  cursor: pointer;
+}
+
+.leaflet-control-zoom a:hover,
+.home-button:hover {
+  border-color: var(--text-secondary) !important;
+  color: var(--text-color) !important;
+}
+
+.leaflet-control-attribution {
+  background: var(--bg-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--text-secondary) !important;
+}

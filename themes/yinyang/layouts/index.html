@@ -1,16 +1,61 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.Language.Locale }}" prefix="og: http://ogp.me/ns#">
-{{ partial "head.html" . }}
-
-<body>
-  {{ partial "loading.html" . }}
-  {{ partial "ink-plum.html" . }}
+{{ define "main" }}
+  <div class="loading" id="site-loader">
+    <div class="banter-loader">
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+      <div class="banter-loader__box"></div>
+    </div>
+  </div>
+  <canvas id="ink-plum-canvas" aria-hidden="true"></canvas>
   <article class="posts">
     <div class="row">
       <div class="col-xs-12">
         {{ partial "header.html" . }}
 
-        {{ partial "heatmap.html" . }}
+        <div class="heatmap_container">
+          <div class="heatmap_content">
+            <div class="heatmap_weekdays">
+              <span>Mon</span>
+              <span>&nbsp;</span>
+              <span>Wed</span>
+              <span>&nbsp;</span>
+              <span>Fri</span>
+              <span>&nbsp;</span>
+              <span>Sun</span>
+            </div>
+            <div class="heatmap_main">
+              <div class="heatmap_month" id="heatmap-months"></div>
+              <div class="heatmap_grid" id="heatmap"></div>
+            </div>
+          </div>
+          <div class="heatmap_footer">
+            <div class="heatmap_less">Less</div>
+            <div class="heatmap_level">
+              <span class="heatmap_level_item heatmap_level_0"></span>
+              <span class="heatmap_level_item heatmap_level_1"></span>
+              <span class="heatmap_level_item heatmap_level_2"></span>
+              <span class="heatmap_level_item heatmap_level_3"></span>
+              <span class="heatmap_level_item heatmap_level_4"></span>
+            </div>
+            <div class="heatmap_more">More</div>
+          </div>
+          <!-- 单例 tooltip，避免频繁创建/销毁 DOM -->
+          <div class="heatmap_tooltip" id="heatmap-tooltip"></div>
+        </div>
+
+        {{- $pages := where .Site.RegularPages "Date" ">" (now.AddDate -1 0 0) -}}
+        {{- $data := slice -}}
+        {{- range $pages.Reverse -}}
+          {{- $data = $data | append (dict "title" (replace (replace .Title "《" "〈") "》" "〉") "date" (.Date.Format "2006-01-02")) -}}
+        {{- end -}}
+        <script type="application/json" id="heatmap-data">{{ $data | jsonify | safeJS }}</script>
+
         <div id="posts-list">
           {{ range (where site.RegularPages "Type" "in" site.Params.mainSections).GroupByDate "2006" -}}
           <section>
@@ -45,8 +90,4 @@
       </div>
     </div>
   </article>
-
-  {{ partial "scripts.html" . }}
-</body>
-
-</html>
+{{ end }}

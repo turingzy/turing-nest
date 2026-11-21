@@ -1,0 +1,16 @@
+{{- $page := partial "page.html" . -}}
+{{- if eq $page "travel-map" }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+{{- end }}
+{{- /* Vendor → global foundation → shared components → page. */ -}}
+{{- $common := slice (resources.Get "css/vendor/flexboxgrid-6.3.1.min.css") (resources.Get "css/base/global.css") (resources.Get "css/components/common.css") (resources.Get "css/components/overlays.css") -}}
+{{- with $common | resources.Concat "css/common.css" | minify | fingerprint "sha384" }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+{{- end }}
+{{- range .Site.Params.extraCSSFiles }}
+<link rel="stylesheet" href="{{ $.Site.Params.staticPrefix }}{{ . | relURL }}">
+{{- end }}
+{{- if eq $page "single" -}}{{- $page = "article" -}}{{- end -}}
+{{- with resources.Get (printf "css/pages/%s.css" $page) | minify | fingerprint "sha384" }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+{{- end }}

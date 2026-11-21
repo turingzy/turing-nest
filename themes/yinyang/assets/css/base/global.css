@@ -1,0 +1,145 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --text-secondary: #666666;
+  --border-color: #000000;
+  --link-color: #000000;
+  --code-bg: #cdcdcd;
+  --blockquote-color: #57606a;
+  --header-line-color: #482936;
+  --hover-bg: #000000;
+  --hover-text: #ffffff;
+  --input-placeholder: #999999;
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --text-secondary: #999999;
+  --border-color: #e0e0e0;
+  --link-color: #e0e0e0;
+  --code-bg: #333333;
+  --blockquote-color: #999999;
+  --header-line-color: #e0e0e0;
+  --hover-bg: #e0e0e0;
+  --hover-text: #1a1a1a;
+  --input-placeholder: #666666;
+}
+
+body {
+  font-family: "Bree Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0 20px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+article {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.markdown-body {
+  font-size: 18px;
+  max-width: 100%;
+}
+
+.markdown-body a {
+  text-decoration: underline;
+  text-decoration-color: var(--link-color);
+}
+
+.markdown-body blockquote {
+  margin: 0;
+  padding: 0 1em;
+  color: var(--blockquote-color);
+  border-left: 0.25em solid var(--text-color);
+}
+
+.markdown-body pre {
+  border: 2px solid var(--text-color);
+  background-color: inherit;
+  padding: 16px;
+  overflow: auto;
+  border-radius: 10px;
+  font-size: 15px;
+  position: relative;
+}
+
+.markdown-body code {
+  padding: 0.2em 0.4em;
+  font-size: 100%;
+  background-color: var(--code-bg);
+  border-radius: 4px;
+}
+
+/* reset code */
+
+.markdown-body pre>code {
+  padding: 0;
+  font-size: 100%;
+  background-color: inherit;
+  border: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .markdown-body { font-size: 16px; }
+}
+/* Table Styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+table,
+th,
+td {
+  border: 1px solid var(--border-color);
+}
+
+th {
+  background-color: rgba(205, 205, 205, 0.3);
+  color: var(--text-color);
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 10px 12px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(205, 205, 205, 0.15);
+}
+
+tr:hover {
+  background-color: rgba(205, 205, 205, 0.25);
+}
+
+[data-theme="dark"] th {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

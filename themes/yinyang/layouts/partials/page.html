@@ -1,0 +1,11 @@
+{{- $page := "single" -}}
+{{- if .IsHome -}}
+  {{- $page = "home" -}}
+{{- else if in (slice "section" "taxonomy" "term") .Kind -}}
+  {{- $page = "list" -}}
+{{- else if eq .Kind "404" -}}
+  {{- $page = "not-found" -}}
+{{- else if in (slice "games" "photography" "travel-map") .Layout -}}
+  {{- $page = .Layout -}}
+{{- end -}}
+{{- return $page -}}

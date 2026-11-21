@@ -1,9 +1,29 @@
-<canvas id="ink-plum-canvas" aria-hidden="true" style="position:fixed;top:0;left:0;width:0;height:100vh;pointer-events:none;z-index:0;opacity:.95"></canvas>
-<style>
-article.posts{position:relative;z-index:1}
-@media(max-width:960px){#ink-plum-canvas{display:none!important}}
-</style>
-<script>
+// 首次访问加载动画
+(function () {
+    var loader = document.getElementById("site-loader");
+    if (!loader) return;
+
+    var hasVisited = sessionStorage.getItem("has_seen_intro");
+    if (hasVisited) {
+      loader.style.display = "none";
+      return;
+    }
+    sessionStorage.setItem("has_seen_intro", "true");
+
+    function dismiss() {
+      if (loader._dismissed) return;
+      loader._dismissed = true;
+      loader.classList.add("fade-out");
+      setTimeout(function () {
+        loader.style.display = "none";
+      }, 400);
+    }
+
+    // 优雅跳动约 600ms 后平滑淡出，仪式感充足且绝不拖泥带水
+    setTimeout(dismiss, 300);
+  })();
+
+// 水墨背景
 (function(){
 'use strict';
 var cv=document.getElementById('ink-plum-canvas'),C=null;
@@ -243,4 +263,132 @@ document.addEventListener('DOMContentLoaded',function(){
   startTimer=setTimeout(start,ld&&getComputedStyle(ld).display!=='none'?650:150);
 });
 })();
-</script>
+
+// 文章热力图
+(function() {
+    var blogPages = JSON.parse(document.getElementById('heatmap-data').textContent);
+
+    // 按日期索引，避免每个格子都 filter 整个列表
+    var pagesByDate = {};
+    for (var i = 0; i < blogPages.length; i++) {
+        var p = blogPages[i];
+        if (!pagesByDate[p.date]) pagesByDate[p.date] = [];
+        pagesByDate[p.date].push(p);
+    }
+
+    var numMonths = window.innerWidth < 768 ? 6 : 12;
+    var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var today = new Date();
+
+    // 生成月份标签
+    var monthDiv = document.getElementById('heatmap-months');
+    var startMonthIndex = (today.getMonth() - (numMonths - 1) + 12) % 12;
+    for (var m = 0; m < numMonths; m++) {
+        var span = document.createElement('span');
+        span.textContent = monthNames[(startMonthIndex + m) % 12];
+        monthDiv.appendChild(span);
+    }
+
+    // 计算起始日期（numMonths 个月前的月初，对齐到周一）
+    function getStartDate() {
+        var d = new Date(today.getFullYear(), today.getMonth() - numMonths + 1, 1);
+        while (d.getDay() !== 1) d.setDate(d.getDate() + 1);
+        return d;
+    }
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function toDateKey(d) {
+        return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+    }
+
+    function formatDateDisplay(d) {
+        return monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    // 按篇数决定颜色等级
+    function getLevel(postCount) {
+        if (postCount === 0) return 0;
+        if (postCount === 1) return 1;
+        if (postCount === 2) return 2;
+        if (postCount === 3) return 3;
+        return 4;
+    }
+
+    // 单例 tooltip
+    var tooltip = document.getElementById('heatmap-tooltip');
+
+    function showTooltip(ev, dateStr, articles) {
+        var html = '<span class="heatmap_tooltip_date">' + dateStr + '</span>';
+        if (articles && articles.length > 0) {
+            var titles = [];
+            for (var i = 0; i < articles.length; i++) {
+                titles.push(articles[i].title);
+            }
+            html += '<span class="heatmap_tooltip_title">' + titles.join(', ') + '</span>';
+        }
+        tooltip.innerHTML = html;
+        tooltip.classList.add('is-visible');
+        positionTooltip(ev);
+    }
+
+    var supportsAnchor = (window.CSS && CSS.supports && CSS.supports('anchor-name', '--test'));
+    function positionTooltip(ev) {
+        if (supportsAnchor) {
+            tooltip.style.left = '';
+            tooltip.style.top = '';
+            return;
+        }
+        var rect = ev.target.getBoundingClientRect();
+        var tw = tooltip.offsetWidth;
+        var th = tooltip.offsetHeight;
+        var left = rect.left + rect.width / 2 - tw / 2;
+        var top = rect.top - th - 6;
+        // 防止超出左右边界
+        if (left < 4) left = 4;
+        if (left + tw > window.innerWidth - 4) left = window.innerWidth - 4 - tw;
+        // 如果上方放不下，放到下方
+        if (top < 4) top = rect.bottom + 6;
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+    }
+
+    function hideTooltip() {
+        tooltip.classList.remove('is-visible');
+    }
+
+    // 构建热力图
+    var container = document.getElementById('heatmap');
+    var startDate = getStartDate();
+    var endDate = new Date();
+    var cur = new Date(startDate);
+    var dayIndex = 0;
+    var week = null;
+
+    while (cur <= endDate) {
+        if (dayIndex % 7 === 0) {
+            week = document.createElement('div');
+            week.className = 'heatmap_week';
+            container.appendChild(week);
+        }
+
+        var key = toDateKey(cur);
+        var articles = pagesByDate[key] || null;
+        var postCount = articles ? articles.length : 0;
+        var level = getLevel(postCount);
+
+        var day = document.createElement('div');
+        day.className = 'heatmap_day heatmap_day_level_' + level;
+
+        // 用闭包保存数据供事件使用
+        (function(dateDisplay, arts) {
+            day.addEventListener('mouseenter', function(e) { showTooltip(e, dateDisplay, arts); });
+            day.addEventListener('mouseleave', hideTooltip);
+        })(formatDateDisplay(cur), articles);
+
+        week.appendChild(day);
+
+        dayIndex++;
+        cur.setDate(cur.getDate() + 1);
+    }
+})();

@@ -1,0 +1,23 @@
+.not-found {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.not-found .not-found-code {
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  font-family: 'Bungee Shade', sans-serif;
+}
+
+.not-found .not-found-message {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+}
+
+.not-found .not-found-hint {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
