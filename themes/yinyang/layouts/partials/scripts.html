@@ -1,7 +1,7 @@
 {{ partial "search.html" . }}
 {{ partial "sponsor.html" . }}
 {{- $page := partial "page.html" . -}}
-{{- $scripts := slice "common" -}}
+{{- $scripts := slice "common" "widget" -}}
 {{- if eq $page "home" -}}
   {{- $scripts = $scripts | append "home" -}}
 {{- else if eq $page "single" -}}

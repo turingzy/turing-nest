@@ -38,13 +38,23 @@ Key YinYang partials and components:
 - `header.html`: Navigation, light/dark theme switching, and search trigger
 - `search.html`: Lightweight client-side fuzzy search powered by `index.json`
 - `single.html`: Table of contents, scroll-spy behavior, and post layout
-- `scripts.html`: Unified gallery image lightbox (grouping, touch swipe, metadata, link bypass) and external link exit confirmation
+- `scripts.html`: Asset aggregation (`common`, `widget`, route scripts), fingerprinting, and lightbox/exit confirmation setup
+- `sponsor.html`: Modal popover for donations/sponsorship (Ko-fi lazy iframe, WeChat/Alipay QR tabs)
 - `ink-plum.html`: Homepage canvas-based ink plum blossom interactive animation and poetry
 - `heatmap.html`: GitHub-style contribution heatmap on the homepage
 - `related.html`: Weighted related post recommendations
 - `giscus.html`: Comments backed by GitHub Discussions
 
 Prefer extending the existing theme override points and page templates. Avoid modifying generated files under `public/`.
+
+## Script and Widget Conventions
+
+Third-party scripts and client-side interactions follow a tiered loading and performance strategy:
+
+- `assets/js/common.js`: Core site behaviors (theme toggle, uptime, gallery lightbox). Kept minimal for long-term cacheability.
+- `assets/js/widget.js`: Centralized manager for global floating/interactive widgets (Mailbike feedback dynamic loader, sponsor popover with lazy-loaded Ko-fi iframe). Aggregated through `scripts.html`.
+- **Page-specific libraries**: Heavy dependencies load strictly on demand (Giscus in `single.html`, Leaflet.js on `travel-map`).
+- **Analytics & Tracking**: Configured via `params.extraHead` and guarded by `hugo.IsProduction` in `head.html` to prevent dev-environment data contamination.
 
 ## Configuration Notes
 
